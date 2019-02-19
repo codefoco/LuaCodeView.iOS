@@ -24,6 +24,8 @@ namespace LuaCodeViewKit
             Initilize();
         }
 
+        public string Tab { get; set; }
+
         private void Initilize()
         {
             Tokens = new[] {
@@ -42,12 +44,117 @@ namespace LuaCodeViewKit
             UIColor.FromRGB (43, 145, 175)),
             new CYRToken("comment", "--.*", UIColor.FromRGB (0, 128, 0)),
             };
+
+            Tab = "\t";
         }
 
         [Export("awakeAfterUsingCoder:")]
         public NSObject AwakeAfterUsingCoder(NSCoder aDecoder)
         {
             return new LuaCodeView(Frame);
+        }
+
+        string FindPreviousLine(UITextPosition from)
+        {
+            nint offset = -1;
+            UITextPosition prefixPosition = GetPosition(from, offset);
+            if (prefixPosition == null)
+                return string.Empty;
+
+            UITextRange range; //[textView textRangeFromPosition: prefixPosition toPosition: from];
+
+            while (prefixPosition != null)
+            {
+                range = GetTextRange(prefixPosition, from);
+
+                string text = TextInRange(range);
+                if (text[0] == '\n')
+                    return text.Substring(1);
+
+                offset--;
+                prefixPosition = GetPosition(from, offset);
+            }
+
+            return string.Empty;
+        }
+
+        int FindFirstNonWhitespace(string previousLine)
+        {
+            for (int i = 0; i < previousLine.Length; i++)
+            {
+                char ch = previousLine[i];
+                if (!char.IsWhiteSpace(ch))
+                    return i;
+            }
+            return -1;
+        }
+
+        string CheckAutoIdentation(string previousLine)
+        {
+            if (previousLine.EndsWith(" do", StringComparison.Ordinal) ||
+                previousLine.EndsWith("\tdo", StringComparison.Ordinal) ||
+                previousLine.Equals("do", StringComparison.Ordinal) ||
+                previousLine.EndsWith(" then", StringComparison.Ordinal) ||
+                previousLine.EndsWith("\tthen", StringComparison.Ordinal) ||
+                previousLine.Equals("then", StringComparison.Ordinal) ||
+                previousLine.EndsWith(" else", StringComparison.Ordinal) ||
+                previousLine.EndsWith("\telse", StringComparison.Ordinal) ||
+                previousLine.Equals("else", StringComparison.Ordinal) ||
+                (
+                    (previousLine.Contains("function ") || previousLine.Contains("function(")) && !previousLine.EndsWith(" end", StringComparison.Ordinal)
+                ))
+                return Tab;
+
+            return string.Empty;
+        }
+
+        string FindIdentationPrefixWithRange(UITextPosition from)
+        {
+            string previousLine = FindPreviousLine(from);
+
+            if (string.IsNullOrEmpty(previousLine))
+                return null;
+
+            string autoIdent = CheckAutoIdentation(previousLine);
+
+            int index = FindFirstNonWhitespace(previousLine);
+            // No identation
+            if (index == 0)
+                return autoIdent;
+            // Entire line is whitespace
+            if (index == -1)
+                return previousLine + autoIdent;
+
+            return previousLine.Substring(0, index) + autoIdent;
+        }
+
+        [Export("textView:shouldChangeTextInRange:replacementText:")]
+        public bool ShouldChangeTextWithReplacementText(UITextView textView, NSRange range, string text)
+        {
+            if (text != "\n")
+                return true;
+
+            // Get the replacement range of the UITextView
+            UITextPosition beginning = BeginningOfDocument;
+            UITextPosition start = GetPosition(beginning, range.Location);
+            UITextPosition end = GetPosition(start, range.Length);
+            UITextRange textRange = GetTextRange(start, end);
+
+            string sufix = FindIdentationPrefixWithRange(start);
+
+            if (string.IsNullOrEmpty(sufix))
+                return true;
+
+            string identation = "\n" + sufix;
+            // Insert that newline character *and* a tab
+            // at the point at which the user inputted just the
+            // newline character
+            ReplaceText(textRange, identation);
+
+            // Update the cursor position accordingly
+            NSRange cursor = new NSRange(range.Location + identation.Length, 0);
+            SelectedRange = cursor;
+            return false;
         }
     }
 }
