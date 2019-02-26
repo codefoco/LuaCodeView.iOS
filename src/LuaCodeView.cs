@@ -8,7 +8,7 @@ using UIKit;
 namespace LuaCodeViewKit
 {
     [Register("LuaCodeView"), DesignTimeVisible(true)]
-    public class LuaCodeView : CYRTextView
+    public class LuaCodeView : CYRTextView, IUITextViewDelegate
     {
         public LuaCodeView(IntPtr handle) : base(handle)
         {
@@ -48,12 +48,17 @@ namespace LuaCodeViewKit
             };
 
             Tab = "\t";
+            Delegate = this;
+            LineCursorEnabled = false;
         }
 
         [Export("awakeAfterUsingCoder:")]
         public NSObject AwakeAfterUsingCoder(NSCoder aDecoder)
         {
-            return new LuaCodeView(Frame);
+            var luaView = new LuaCodeView(Frame);
+            luaView.CopyProperties(this);
+           
+            return luaView;
         }
 
         string FindPreviousLine(UITextPosition from)
