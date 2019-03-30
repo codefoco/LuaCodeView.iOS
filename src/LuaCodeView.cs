@@ -75,6 +75,10 @@ namespace LuaCodeViewKit
                 range = GetTextRange(prefixPosition, from);
 
                 string text = TextInRange(range);
+
+                if (string.IsNullOrEmpty(text))
+                    return string.Empty;
+
                 if (text[0] == '\n')
                     return text.Substring(1);
 
