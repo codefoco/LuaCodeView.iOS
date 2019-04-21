@@ -10,7 +10,7 @@ LuaCodeView.iOS
 
 |  | Status | 
 | :------ | :------: | 
-| ![mac](https://badgen.net/badge//iOS?icon=apple&color=purple&list=1) | [![Build Status](https://dev.azure.com/NLua/NLua/_apis/build/status/Codefoco.LuaCodeView.iOS?branchName=master)](https://dev.azure.com/NLua/NLua/_build/latest?definitionId=10&branchName=master) |
+| ![mac](https://badgen.net/badge//iOS?icon=apple&color=purple&list=1) | [![Build Status](https://dev.azure.com/codefoco/NuGets/_apis/build/status/Codefoco.LuaCodeView.iOS/Codefoco.LuaCodeView.iOS?branchName=master)](https://dev.azure.com/codefoco/NuGets/_build/latest?definitionId=9&branchName=master) |
 
 UITextView with Lua syntax highlight 
 

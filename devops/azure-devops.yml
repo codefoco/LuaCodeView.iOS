@@ -1,0 +1,52 @@
+pool:
+  name: Hosted macOS
+  demands: msbuild
+
+steps:
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+
+- script: 'brew update'
+  displayName: 'Brew Update'
+
+- script: 'brew install gitversion --ignore-dependencies'
+  displayName: 'Install GitVersion'
+
+- task: PowerShell@2
+  displayName: 'PreBuild Script'
+  inputs:
+    targetType: filePath
+    filePath: ./devops/PreBuild.ps1
+    arguments: 'Codefoco.LuaCodeView.iOS LuaCodeView.iOS.nuspec'
+
+- task: MSBuild@1
+  displayName: 'Build solution LuaCodeView.iOS.sln'
+  inputs:
+    solution: LuaCodeView.iOS.sln
+    configuration: Release
+
+- script: 'nuget setapikey $(apikey)'
+  displayName: 'Set NuGet API Key'
+
+- task: PowerShell@2
+  displayName: 'Package NuGet'
+  inputs:
+    targetType: filePath
+    filePath: ./devops/Package.ps1
+    arguments: 'Codefoco.LuaCodeView.iOS LuaCodeView.iOS.nuspec'
+
+- script: 'mv *.nupkg Codefoco.LuaCodeView.iOS.nupkg'
+  displayName: 'Rename NuGet package'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Codefoco.LuaCodeView.iOS.nupkg Artifact'
+  inputs:
+    PathtoPublish: Codefoco.LuaCodeView.iOS.nupkg
+    ArtifactName: Codefoco.LuaCodeView.iOS.nupkg
+
+- task: PowerShell@2
+  displayName: 'Publish NuGet'
+  inputs:
+    targetType: filePath
+    filePath: ./devops/Publish.ps1
+    arguments: Codefoco.LuaCodeView.iOS
