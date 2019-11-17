@@ -4,12 +4,18 @@ pool:
 
 steps:
 
-# Azure DevOps hosted pool is still using an old version of Xamarin.iOS, 
-# so we will use the previous major version of Xcode
+# Print the current version of Xcode
 - task: CmdLine@2
+  displayName: 'Show Xcode version'
   inputs:
-    script: 'sudo rm -rf /Applications/Xcode.app/;
-             sudo /bin/mv /Applications/Xcode_9.4.1.app/ /Applications/Xcode.app/'
+    script: '/usr/bin/xcodebuild -version'
+
+- task: CmdLine@2
+  displayName: 'Provisioning Xamarin.iOS'
+  inputs:
+    script: 'cd ~;
+            curl -O https://download.visualstudio.microsoft.com/download/pr/ae8e9044-57e0-4500-bc58-6fe41d5f711d/71a1316dcca8c4cbcfb070aff9f738d2/xamarin.ios-13.6.0.12.pkg;
+            sudo installer -pkg ~/xamarin.ios-13.6.0.12.pkg -target /'
 
 # Print the current version of Xamarin.iOS
 - task: CmdLine@2
