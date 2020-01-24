@@ -13,10 +13,10 @@
       UITextView with Lua syntax highlight   
     </description>
     <releaseNotes>Release: 9621ffb</releaseNotes>
-    <copyright>Copyright © Vinicius Jarina 2019</copyright>
+    <copyright>Copyright © Vinicius Jarina 2020</copyright>
     <tags>LuaCodeView</tags>
     <dependencies>
-      <dependency id="Codefoco.CYRTextView" version="0.4.8" />
+      <dependency id="Codefoco.CYRTextView" version="0.4.11" />
     </dependencies>
   </metadata>
   <files>

@@ -12,7 +12,7 @@ using Foundation;
 [assembly: AssemblyDescription ("UITextView with Lua syntax highlight ")]
 [assembly: AssemblyCompany ("Codefoco")]
 [assembly: AssemblyProduct ("LuaCodeView.iOS")]
-[assembly: AssemblyCopyright ("Copyright © Vinicius Jarina 2019")]
+[assembly: AssemblyCopyright ("Copyright © Vinicius Jarina 2020")]
 [assembly: AssemblyCulture ("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".

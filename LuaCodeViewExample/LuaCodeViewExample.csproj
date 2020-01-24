@@ -87,7 +87,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="CYRTextView">
-      <HintPath>..\packages\Codefoco.CYRTextView.0.4.8\lib\xamarinios\CYRTextView.dll</HintPath>
+      <HintPath>..\packages\Codefoco.CYRTextView.0.4.11\lib\xamarinios\CYRTextView.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
