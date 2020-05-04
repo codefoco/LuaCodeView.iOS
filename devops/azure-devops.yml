@@ -6,58 +6,64 @@ resources:
       name: codefoco/AzureDevopsTemplates
       endpoint: codefoco
 
-pool:
-  vmImage: 'macOS-10.14'
-  demands: msbuild
+jobs:
+- job: 'BuildMac'
+  displayName: 'Mac'
+  variables:
+    - group: 'Keys'
 
-steps:
-- checkout: self 
+  pool:
+    vmImage: 'macOS-10.14'
+    demands: msbuild
 
-- template: common-dotnet.yml@templates
-- template: common-macos.yml@templates
+  steps:
+  - checkout: self 
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore LuaCodeView.iOS.sln'
-  inputs:
-    restoreSolution: LuaCodeView.iOS.sln
+  - template: common-dotnet.yml@templates
+  - template: common-macos.yml@templates
 
-- task: PowerShell@2
-  displayName: 'PreBuild Script'
-  inputs:
-    targetType: filePath
-    filePath: ./devops/PreBuild.ps1
-    arguments: 'Codefoco.LuaCodeView.iOS LuaCodeView.iOS.nuspec'
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore LuaCodeView.iOS.sln'
+    inputs:
+      restoreSolution: LuaCodeView.iOS.sln
 
-- task: MSBuild@1
-  displayName: 'Build solution LuaCodeView.iOS.sln'
-  inputs:
-    solution: LuaCodeView.iOS.sln
-    configuration: Release
+  - task: PowerShell@2
+    displayName: 'PreBuild Script'
+    inputs:
+      targetType: filePath
+      filePath: ./devops/PreBuild.ps1
+      arguments: 'Codefoco.LuaCodeView.iOS LuaCodeView.iOS.nuspec'
 
-- script: 'nuget setapikey $(apikey)'
-  displayName: 'Set NuGet API Key'
+  - task: MSBuild@1
+    displayName: 'Build solution LuaCodeView.iOS.sln'
+    inputs:
+      solution: LuaCodeView.iOS.sln
+      configuration: Release
 
-- task: PowerShell@2
-  displayName: 'Package NuGet'
-  inputs:
-    targetType: filePath
-    filePath: ./devops/Package.ps1
-    arguments: 'Codefoco.LuaCodeView.iOS LuaCodeView.iOS.nuspec'
+  - script: 'nuget setapikey $(apikey)'
+    displayName: 'Set NuGet API Key'
 
-- script: 'mv *.nupkg Codefoco.LuaCodeView.iOS.nupkg'
-  displayName: 'Rename NuGet package'
+  - task: PowerShell@2
+    displayName: 'Package NuGet'
+    inputs:
+      targetType: filePath
+      filePath: ./devops/Package.ps1
+      arguments: 'Codefoco.LuaCodeView.iOS LuaCodeView.iOS.nuspec'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Codefoco.LuaCodeView.iOS.nupkg Artifact'
-  inputs:
-    PathtoPublish: Codefoco.LuaCodeView.iOS.nupkg
-    ArtifactName: Codefoco.LuaCodeView.iOS.nupkg
+  - script: 'mv *.nupkg Codefoco.LuaCodeView.iOS.nupkg'
+    displayName: 'Rename NuGet package'
 
-- task: PowerShell@2
-  displayName: 'Publish NuGet'
-  inputs:
-    targetType: filePath
-    filePath: ./devops/Publish.ps1
-    arguments: Codefoco.LuaCodeView.iOS
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Codefoco.LuaCodeView.iOS.nupkg Artifact'
+    inputs:
+      PathtoPublish: Codefoco.LuaCodeView.iOS.nupkg
+      ArtifactName: Codefoco.LuaCodeView.iOS.nupkg
 
-- template: send-telegram.yml@templates
+  - task: PowerShell@2
+    displayName: 'Publish NuGet'
+    inputs:
+      targetType: filePath
+      filePath: ./devops/Publish.ps1
+      arguments: Codefoco.LuaCodeView.iOS
+
+  - template: send-telegram.yml@templates
