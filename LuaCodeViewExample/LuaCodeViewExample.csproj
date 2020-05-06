@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectGuid>{ECE3F231-2B48-45E3-9EE6-E3394964ADD6}</ProjectGuid>
@@ -121,6 +124,9 @@
       <Project>{A639EF3D-C97E-48B2-8EA2-CE7571032083}</Project>
       <Name>LuaCodeView.iOS</Name>
     </ProjectReference>
+    <PackageReference Include="Codefoco.CYRTextView">
+      <Version>0.4.11</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
