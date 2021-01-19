@@ -5,15 +5,15 @@
     <version>0.1.0-beta-build0</version>
     <authors>Codefoco</authors>
     <owners>Vinicius Jarina</owners>
-    <licenseUrl>https://github.com/codefoco/LuaCodeView.iOS/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/codefoco/LuaCodeView.iOS/blob/main/LICENSE</licenseUrl>
     <projectUrl>https://github.com/codefoco/LuaCodeView.iOS</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/codefoco/LuaCodeView.iOS/master/LuaCodeView.iOS.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/codefoco/LuaCodeView.iOS/main/LuaCodeView.iOS.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       UITextView with Lua syntax highlight   
     </description>
     <releaseNotes>Release: 9621ffb</releaseNotes>
-    <copyright>Copyright © Vinicius Jarina 2020</copyright>
+    <copyright>Copyright © Vinicius Jarina 2021</copyright>
     <tags>LuaCodeView</tags>
     <dependencies>
       <dependency id="Codefoco.CYRTextView" version="0.4.11" />

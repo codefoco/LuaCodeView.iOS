@@ -1,5 +1,5 @@
 
-[![Logo](https://raw.githubusercontent.com/codefoco/LuaCodeView.iOS/master/LuaCodeView.iOS.png)]()
+[![Logo](https://raw.githubusercontent.com/codefoco/LuaCodeView.iOS/main/LuaCodeView.iOS.png)]()
 
 LuaCodeView.iOS
 ===============
@@ -10,7 +10,7 @@ LuaCodeView.iOS
 
 |  | Status | 
 | :------ | :------: | 
-| ![mac](https://badgen.net/badge//iOS?icon=apple&color=purple&list=1) | [![Build Status](https://dev.azure.com/codefoco/NuGets/_apis/build/status/Codefoco.LuaCodeView.iOS/Codefoco.LuaCodeView.iOS?branchName=master)](https://dev.azure.com/codefoco/NuGets/_build/latest?definitionId=9&branchName=master) |
+| ![mac](https://badgen.net/badge//iOS?icon=apple&color=purple&list=1) | [![Build Status](https://dev.azure.com/codefoco/NuGets/_apis/build/status/Codefoco.LuaCodeView.iOS/Codefoco.LuaCodeView.iOS?branchName=main)](https://dev.azure.com/codefoco/NuGets/_build/latest?definitionId=9&branchName=main) |
 
 UITextView with Lua syntax highlight 
 
